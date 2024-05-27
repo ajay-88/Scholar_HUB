@@ -260,6 +260,10 @@ class StudentApply(APIView):
 
 class ListScholarshipforStudents(APIView): # view for list all scholarship for  students
 
+    authentication_classes=[authentication.TokenAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+
     def get(self, request, *args, **kwargs):
         # Retrieve projects uploaded by the currently authenticated user
         projects = Scholarship.objects.all()
