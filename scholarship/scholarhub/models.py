@@ -16,6 +16,7 @@ class Profiledb(AbstractUser):# csutom can added
 
 
 class Scholarship(models.Model):
+
     name=models.CharField(max_length=100)
     description=models.TextField()
     eligibility=models.TextField()
@@ -23,6 +24,8 @@ class Scholarship(models.Model):
    
     duration=models.CharField(max_length=100)
     deadline=models.DateField()
+
+    
 
 class StudentApplication(models.Model):
     name=models.CharField(max_length=200)

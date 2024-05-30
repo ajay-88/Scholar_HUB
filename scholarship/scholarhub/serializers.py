@@ -38,17 +38,32 @@ class ScholarshipSerializer(serializers.ModelSerializer):
         model = Scholarship
         fields = [ 'name', 'description', 'eligibility', 'amount', 'duration', 'deadline']
 
+
+
+
+
+
+from rest_framework import serializers
+from .models import StudentApplication
+
 class StudentApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentApplication
-        fields = [ 'name', 'email', 'phone', 'application_date', 'certificate', 'identity', 'photo', 'scholarship', 'status']
+        fields = ['name', 'email', 'phone', 'certificate', 'identity', 'photo']
 
-        read_only_fields=["id"]
+    def create(self, validated_data):
+        student = self.context['student']
+        scholarship = self.context['scholarship']
+        return StudentApplication.objects.create(student=student, scholarship=scholarship, **validated_data)
+
+
+
+        # read_only_fields=["id"]
 
 class StudentApplicationSerializerUP(serializers.ModelSerializer):
     class Meta:
         model = StudentApplication
-        fields = ['status']
+        fields = ['status'] 
 
         read_only_fields=["id"]
 

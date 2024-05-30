@@ -326,4 +326,23 @@ class RetrieveScholarship(APIView):  # to view each scholarship one by one for s
          
 
          
-         
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from .models import Scholarship, Profiledb, StudentApplication
+from .serializers import StudentApplicationSerializer
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def applicationform(request, scholar_id):
+    scholar = get_object_or_404(Scholarship, pk=scholar_id)
+    student = get_object_or_404(Profiledb, pk=request.user.pk)
+
+    if request.method == 'POST':
+        serializer = StudentApplicationSerializer(data=request.data, context={'student': student, 'scholarship': scholar})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
